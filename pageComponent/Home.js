@@ -1,16 +1,96 @@
-import { Text, View, StyleSheet, TextInput, Button, StatusBar, Image, TouchableOpacity, ScrollView } from 'react-native'
+import { Text, View, StyleSheet, TextInput, Button, StatusBar, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon1 from 'react-native-vector-icons/FontAwesome';
 import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+import React from 'react';
+import { useState, useRef } from 'react';
 
-function Home({navigation}) {
+export const SLIDER_WIDTH = Dimensions.get('window').width;
+export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
+
+const data = [
+    {
+        id: 1,
+        name: 'React JS',
+        url: require('../image/vs1.png'),
+    },
+    {
+        id: 2,
+        name: 'JavaScript',
+        url: require('../image/vs2.png'),
+    },
+    {
+        id: 3,
+        name: 'Node JS',
+        url: require('../image/vs3.png'),
+    },
+];
+
+const renderItem = ({ item }) => {
     return (
+        <View
+            style={{
+                borderWidth: 1,
+                padding: 0,
+                borderRadius: 10,
+                margin:0,
+                alignItems: 'center',
+                backgroundColor: 'white',
+            }}>
+            <Image source={item.url} style={{ width: 250, height:150,resizeMode:'contain' }} />
+            
+        </View>
+    );
+};
+
+function Home({ navigation }) {
+
+    const [index, setIndex] = useState(0);
+    const isCarousel = useRef(null);
+
+
+    return (
+        <ScrollView>
         <View style={styles.container}>
-            <ScrollView horizontal={true}>
+
+
+            <View style={{ marginVertical: 0 , height: 230}}>
+                <Carousel
+                    ref={isCarousel}
+                    data={data}
+                    renderItem={renderItem}
+                    sliderWidth={SLIDER_WIDTH}
+                    itemWidth={ITEM_WIDTH}
+                    onSnapToItem={index => setIndex(index)}
+                />
+                <Pagination
+                    dotsLength={data.length}
+                    activeDotIndex={index}
+                    carouselRef={isCarousel}
+                    dotStyle={{
+                        width: 10,
+                        height: 10,
+                        borderRadius: 5,
+                        marginHorizontal: 8,
+                        backgroundColor: '#F4BB41',
+                    }}
+                    tappableDots={true}
+                    inactiveDotStyle={{
+                        backgroundColor: 'black',
+                        // Define styles for inactive dots here
+                    }}
+                    inactiveDotOpacity={0.4}
+                    inactiveDotScale={0.6}
+                />
+            </View>
+
+
+            {/* <ScrollView horizontal={true}>
                 <Image source={require('../image/vs1.png')} style={{ marginHorizontal: 20 }} />
                 <Image source={require('../image/vs2.png')} style={{ marginHorizontal: 20 }} />
                 <Image source={require('../image/vs3.png')} style={{ marginHorizontal: 20 }} />
-            </ScrollView>
+            </ScrollView> */}
 
             <View style={{ flexDirection: 'row', marginBottom: 20 }}>
                 <TouchableOpacity style={styles.rowButton1}>
@@ -24,20 +104,20 @@ function Home({navigation}) {
                 </TouchableOpacity>
             </View>
 
-            <View style={{ flexDirection: 'row', marginBottom: 20}}>
-                <View style={{alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', marginBottom: 20 }}>
+                <View style={{ alignItems: 'center' }}>
                     <Image source={require('../image/dien.png')} style={{ marginHorizontal: 10 }} />
                     <Text>Điện</Text>
                 </View>
-                <View style={{alignItems: 'center'}}>
+                <View style={{ alignItems: 'center' }}>
                     <Image source={require('../image/nuoc.png')} style={{ marginHorizontal: 10 }} />
                     <Text>Nước</Text>
-                </View>                
-                <View style={{alignItems: 'center'}}>
+                </View>
+                <View style={{ alignItems: 'center' }}>
                     <Image source={require('../image/dien_lanh.png')} style={{ marginHorizontal: 10 }} />
                     <Text>Điện Lạnh</Text>
-                </View>                
-                <View style={{alignItems: 'center'}}>
+                </View>
+                <View style={{ alignItems: 'center' }}>
                     <Image source={require('../image/xay_dung.png')} style={{ marginHorizontal: 10 }} />
                     <Text>Xây Dựng</Text>
                 </View>
@@ -72,6 +152,7 @@ function Home({navigation}) {
                 <Text style={styles.loginText1}>Xem thêm</Text>
             </TouchableOpacity>
         </View>
+        </ScrollView>
     )
 }
 
