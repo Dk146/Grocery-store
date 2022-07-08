@@ -27,6 +27,12 @@ Features:
   Key collection to finish the game
   
   Interactive monsters!
+
+Version:
+
+  Unity Editor: 2020.3.14f1
+  
+  Unity Hub: 3.1.2
   
 Resource Reference:
 
